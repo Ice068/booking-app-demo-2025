@@ -397,3 +397,13 @@ app.get('/api/reports/export', authenticateToken, async (req, res) => {
 });
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+// Keep alive - ป้องกัน Render sleep
+const https = require('https');
+setInterval(() => {
+  https.get('https://booking-backend-g4f1.onrender.com/api/rooms', (res) => {
+    console.log(`Keep alive ping: ${res.statusCode}`);
+  }).on('error', (err) => {
+    console.log(`Keep alive error: ${err.message}`);
+  });
+}, 14 * 60 * 1000);
